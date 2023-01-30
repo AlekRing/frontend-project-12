@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.1",
     "bootstrap": "^5.2.3",
+    "classnames": "^2.3.2",
     "formik": "^2.2.9",
     "i18next": "^22.4.4",
     "react": "^18.2.0",
@@ -19,6 +20,8 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.5",
     "react-scripts": "5.0.1",
+    "socket.io": "^4.5.4",
+    "socket.io-client": "^4.5.4",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
@@ -45,6 +48,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.31.11",
-    "eslint-plugin-react-hooks": "^4.6.0"
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.8.3"
   }
 }

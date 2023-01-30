@@ -6,10 +6,11 @@
 ### Setup:
     * clone project
     * make install
-    * make postinstall
 
 ## System requirements
 * NodeJS >= 12 <= 18
 * NPM >= 6.x
 * Make
 
+to start the app:
+* make start

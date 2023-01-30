@@ -1,0 +1,8 @@
+.channelsPlus {
+    border: none;
+}
+
+.channelsPlus:hover {
+        background: rgb(0, 0, 0, 0.4);
+        cursor: pointer;
+    }

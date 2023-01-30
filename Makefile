@@ -1,11 +1,11 @@
 install:
 	npm ci
 
-start-frontend:
-	make -C frontend start
+front:
+	make -C frontend & npm start
 
-start-backend:
+back:
 	npx start-server
 
 start:
-	make start-backend & make start-frontend
+	make back & make front
