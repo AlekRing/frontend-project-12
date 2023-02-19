@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import * as Yup from 'yup';
-import LoginForm from '../components/loginForm';
+import CommonForm from '../components/CommonForm';
 
+const initialValuesInputsProps = { username: { type: 'text', placeholder: 'username' }, password: { type: 'text', placeholder: 'password' } };
 const initialValues = { username: '', password: '' };
 
 const loginSchema = Yup.object().shape({
@@ -34,9 +35,10 @@ const Login = () => {
 
   return (
     <div className="container mt-5" style={{ maxWidth: '630px' }}>
-      <LoginForm
-        login={handleSubmit}
+      <CommonForm
+        trySubmit={handleSubmit}
         initialValues={initialValues}
+        inputsProps={initialValuesInputsProps}
         validationSchema={loginSchema}
         submitError={submitError}
       />

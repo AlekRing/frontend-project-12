@@ -3,9 +3,9 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import ChannelsList from '../components/channelsList';
-import MessagesList from '../components/messagesList';
-import Navbar from '../components/navbar';
+import ChannelsList from '../components/ChannelsList';
+import MessagesList from '../components/MessagesList';
+import Navbar from '../components/Navbar';
 import { changeCurrentChannelId } from '../store/reducers/chat';
 import { chatSelector, currentChatMessagesSelector } from '../store/selectors/chat';
 
@@ -48,19 +48,19 @@ const Chat = ({ sendMessage, openModal }) => {
               handleChange,
               values,
             }) => (
-              <Form>
+              <Form onSubmit={handleSubmit}>
                 {
                   Object.keys(initialValue).map((key) => (
                     <Form.Group className="mb-3 input-group flex-nowrap" key={key} controlId={key}>
                       <Form.Control
                         type="text"
-                        placeholder="start message"
+                        placeholder="Hello!"
                         onChange={handleChange}
                         className="form-control"
                         name={key}
                         value={values[key]}
                       />
-                      <Button className="input-group-text" variant="primary" type="submit" onClick={handleSubmit}>
+                      <Button className="input-group-text" variant="primary" type="submit">
                         {'>'}
                       </Button>
                     </Form.Group>

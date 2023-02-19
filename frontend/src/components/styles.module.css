@@ -3,6 +3,11 @@
 }
 
 .channelsPlus:hover {
-        background: rgb(0, 0, 0, 0.4);
-        cursor: pointer;
-    }
+    background: rgb(0, 0, 0, 0.4);
+    cursor: pointer;
+}
+
+.channelItem {
+    display: flex;
+    justify-content: space-between;
+}

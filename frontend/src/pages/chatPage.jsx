@@ -1,21 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import { io } from 'socket.io-client';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import Chat from '../containers/chat';
-import { addToChat, addMessage } from '../store/reducers/chat';
+import Chat from '../containers/Chat';
+import {
+  addToChat, addMessage, addChannel, changeCurrentChannelId,
+} from '../store/reducers/chat';
 import { chatSelector } from '../store/selectors/chat';
-import ChatModal from '../containers/ChatModal';
+import AddChannelModal from '../components/AddChannelModal';
+import ChatContext from '../store/context/chatContext';
+import RemoveChannelModal from '../components/RemoveChannelModal';
 
 const ChatPage = ({ token }) => {
   const dispatch = useDispatch();
   const [socket, setSocket] = useState(null);
   const chat = useSelector(chatSelector);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!token || socket) return;
+    if (!token) return;
 
     const socketIo = io('', {
       withCredentials: true,
@@ -23,21 +30,42 @@ const ChatPage = ({ token }) => {
     });
 
     setSocket(socketIo);
-    socketIo.on('connect', () => {});
+  }, [dispatch, token]);
 
-    socketIo.on('disconnect', () => {
-      console.error('disconnect', socketIo);
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on('disconnect', () => {
+      console.error('disconnect', socket);
     });
 
-    socketIo.on('newMessage', (payload) => {
-      console.log('newMessage', payload);
+    socket.on('newMessage', (payload) => {
       dispatch(addMessage(payload));
     });
 
     socket.on('newChannel', (payload) => {
-      console.log(payload);
+      dispatch(addChannel(payload));
+
+      const { id } = payload;
+      dispatch(changeCurrentChannelId(id));
     });
-  }, [dispatch, socket, token]);
+
+    socket.on('removeChannel', (payload) => {
+      console.log(payload); // { id: 6 };
+    });
+
+    socket.on('renameChannel', (payload) => {
+      console.log(payload); // { id: 7, name: "new name channel", removable: true }
+    });
+
+    return () => {
+      socket.off('newChannel');
+      socket.off('newMessage');
+      socket.off('disconnect');
+      socket.off('removeChannel');
+      socket.off('renameChannel');
+    };
+  }, [dispatch, socket]);
 
   useEffect(() => {
     const getChannels = async () => {
@@ -47,7 +75,6 @@ const ChatPage = ({ token }) => {
             Authorization: `bearer ${token}`,
           },
         });
-        console.warn('Initiate: ', response);
 
         dispatch(addToChat(response.data));
       } catch (error) {
@@ -62,34 +89,25 @@ const ChatPage = ({ token }) => {
     socket.emit('newMessage', { body: message, channelId: chat.currentChannelId });
   };
 
-  const openModal = () => setIsModalOpen(true);
-  const handleSubmit = ({ channelName }) => {
-    console.log(channelName);
-    socket.emit('newChannel', { name: channelName });
-  };
+  const toggleAddModal = () => setIsAddModalOpen((p) => !p);
+  const toggleRemoveModal = useCallback(
+    () => setIsRemoveModalOpen((p) => !p),
+    [setIsRemoveModalOpen],
+  );
 
-  // const testCreate = async () => {
-  //   try {
-  //     const response = await axios.post('/api/v1/signup', {
-  //       headers: {
-  //         Authorization: `bearer ${token}`,
-  //       },
-  //       body: {
-  //         username: 'asterisk',
-  //         password: 'asterisk',
-  //       },
-  //     });
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  //  addNewChannel={}
+  const passingContext = useMemo(
+    () => ({ socket, isAddModalOpen, toggleRemoveModal }),
+    [isAddModalOpen, socket, toggleRemoveModal],
+  );
+
+  console.log(isRemoveModalOpen);
+
   return (
-    <>
-      <Chat sendMessage={sendMessage} openModal={openModal} />
-      <ChatModal isOpen={isModalOpen} handleSubmit={handleSubmit} />
-    </>
+    <ChatContext.Provider value={passingContext}>
+      <Chat sendMessage={sendMessage} openModal={toggleAddModal} />
+      <AddChannelModal isOpen={isAddModalOpen} toggle={toggleAddModal} />
+      <RemoveChannelModal isOpen={isRemoveModalOpen} toggle={toggleRemoveModal} />
+    </ChatContext.Provider>
   );
 };
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import PrivateRoute from '../containers/privateRoute';
-import ChatPage from '../pages/chatPage';
-import LoginPage from '../pages/loginPage';
-import NotFound from '../pages/notFound';
+import PrivateRoute from '../containers/PrivateRoute';
+import ChatPage from '../pages/ChatPage';
+import LoginPage from '../pages/LoginPage';
+import NotFound from '../pages/NotFound';
 
 const AppRoutes = () => {
   const token = localStorage.getItem('token');

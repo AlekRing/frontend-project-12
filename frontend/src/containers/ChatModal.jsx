@@ -1,14 +1,17 @@
 import React from 'react';
-import Button from 'react-bootstrap/esm/Button';
-import ModalWindow from '../components/ModalWindow';
+import Modal from 'react-bootstrap/Modal';
 
-const ChatModal = ({ isOpen, handleSubmit }) => (
-  <ModalWindow isOpen={isOpen}>
-    <p>Add new channel.</p>
-    <Button variant="primary" type="submit" onClick={handleSubmit}>
-      Add channel
-    </Button>
-  </ModalWindow>
+const ChatModal = ({ isOpen, title, children }) => (
+  <Modal show={isOpen}>
+    <Modal.Dialog>
+      <Modal.Header>
+        <Modal.Title>{title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {children}
+      </Modal.Body>
+    </Modal.Dialog>
+  </Modal>
 );
 
 export default ChatModal;
