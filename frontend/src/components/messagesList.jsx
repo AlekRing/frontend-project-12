@@ -1,16 +1,14 @@
 import React from 'react';
 
-const MessagesList = ({ messages, currentChannelId }) => (
-  <div>
-    <ul key={currentChannelId}>
-      {
+const MessagesList = ({ messages, currentChannelId, t }) => (
+  <ul key={currentChannelId}>
+    {
         messages.length ? messages.map(({ body, id }) => (
           <li key={id}>{body}</li>
         ))
-          : 'No messages yet'
+          : t('noMessages')
       }
-    </ul>
-  </div>
+  </ul>
 );
 
 export default MessagesList;

@@ -7,9 +7,7 @@ const ChatModal = ({ isOpen, title, children }) => (
       <Modal.Header>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        {children}
-      </Modal.Body>
+      <Modal.Body>{children}</Modal.Body>
     </Modal.Dialog>
   </Modal>
 );

@@ -13,18 +13,18 @@ const initialValuesInputsProps = { channelName: { type: 'text', placeholder: 'ch
 
 const channelNameSchema = Yup.object().shape({
   channelName: Yup.string()
-    .min(2, 'tooShort')
-    .max(50, 'tooLong')
-    .required('required'),
+    .min(2, 'Too Short!')
+    .max(25, 'Too Long!')
+    .required('Required'),
 });
 
-const AddChannelModal = ({ toggle, isOpen }) => {
+const RenameChannelModal = ({ toggle, isOpen }) => {
   const { t } = useTranslation();
   const [submitError, setSubmitError] = useState('');
 
   const channelsNames = useSelector(channelsNamesSelector);
 
-  const { socket } = useContext(ChatContext);
+  const { socket, changingChannelId } = useContext(ChatContext);
 
   useEffect(() => {
     if (!isOpen) setSubmitError('');
@@ -38,22 +38,21 @@ const AddChannelModal = ({ toggle, isOpen }) => {
     try {
       uniqueSchema.validateSync(channelName);
 
-      socket.emit('newChannel', { name: channelName });
+      socket.emit('renameChannel', { id: changingChannelId, name: channelName });
       toggle();
     } catch (error) {
-      setSubmitError(t('uniqueChannelNameError'));
+      setSubmitError('Name of the channel must be unique');
     }
   };
 
   return (
-    <ChatModal isOpen={isOpen} title={t('addChannelTitle')}>
+    <ChatModal isOpen={isOpen} title={t('renameChannelModal')}>
       <CommonForm
         trySubmit={handleSubmit}
         initialValues={initialValues}
         inputsProps={initialValuesInputsProps}
         validationSchema={channelNameSchema}
         submitError={submitError}
-        submitButtonText={t('submitAddChannelButton')}
         t={t}
       >
         <Button variant="secondary" type="button" onClick={toggle} className="d-inline ms-3">{t('cancel')}</Button>
@@ -62,4 +61,4 @@ const AddChannelModal = ({ toggle, isOpen }) => {
   );
 };
 
-export default AddChannelModal;
+export default RenameChannelModal;

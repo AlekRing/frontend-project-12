@@ -3,23 +3,24 @@ import React, {
 } from 'react';
 import { io } from 'socket.io-client';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Chat from '../containers/Chat';
 import {
-  addToChat, addMessage, addChannel, changeCurrentChannelId,
+  addToChat, addMessage, addChannel, changeCurrentChannelId, removeChannel,
 } from '../store/reducers/chat';
-import { chatSelector } from '../store/selectors/chat';
 import AddChannelModal from '../components/AddChannelModal';
 import ChatContext from '../store/context/chatContext';
 import RemoveChannelModal from '../components/RemoveChannelModal';
+import RenameChannelModal from '../components/RenameChannelModal';
 
 const ChatPage = ({ token }) => {
   const dispatch = useDispatch();
   const [socket, setSocket] = useState(null);
-  const chat = useSelector(chatSelector);
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
+  const [changingChannelId, setChangingChannelId] = useState(null);
 
   useEffect(() => {
     if (!token) return;
@@ -51,7 +52,7 @@ const ChatPage = ({ token }) => {
     });
 
     socket.on('removeChannel', (payload) => {
-      console.log(payload); // { id: 6 };
+      dispatch(removeChannel(payload));
     });
 
     socket.on('renameChannel', (payload) => {
@@ -85,27 +86,33 @@ const ChatPage = ({ token }) => {
     getChannels();
   }, [dispatch, token]);
 
-  const sendMessage = ({ message }) => {
-    socket.emit('newMessage', { body: message, channelId: chat.currentChannelId });
-  };
-
   const toggleAddModal = () => setIsAddModalOpen((p) => !p);
+  const toggleRenameModal = useCallback(
+    () => setIsRenameModalOpen((p) => !p),
+    [setIsRenameModalOpen],
+  );
   const toggleRemoveModal = useCallback(
     () => setIsRemoveModalOpen((p) => !p),
     [setIsRemoveModalOpen],
   );
 
   const passingContext = useMemo(
-    () => ({ socket, isAddModalOpen, toggleRemoveModal }),
-    [isAddModalOpen, socket, toggleRemoveModal],
+    () => ({
+      socket,
+      isAddModalOpen,
+      toggleRemoveModal,
+      toggleRenameModal,
+      changingChannelId,
+      setChangingChannelId: (id) => setChangingChannelId(id),
+    }),
+    [isAddModalOpen, changingChannelId, socket, toggleRemoveModal, toggleRenameModal],
   );
-
-  console.log(isRemoveModalOpen);
 
   return (
     <ChatContext.Provider value={passingContext}>
-      <Chat sendMessage={sendMessage} openModal={toggleAddModal} />
+      <Chat openModal={toggleAddModal} />
       <AddChannelModal isOpen={isAddModalOpen} toggle={toggleAddModal} />
+      <RenameChannelModal isOpen={isRenameModalOpen} toggle={toggleRenameModal} />
       <RemoveChannelModal isOpen={isRemoveModalOpen} toggle={toggleRemoveModal} />
     </ChatContext.Provider>
   );

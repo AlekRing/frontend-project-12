@@ -4,7 +4,14 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 const CommonForm = ({
-  initialValues, trySubmit, validationSchema, submitError, inputsProps, submitButtonText,
+  initialValues,
+  trySubmit,
+  validationSchema,
+  submitError,
+  inputsProps,
+  submitButtonText,
+  children,
+  t,
 }) => (
   <Formik
     initialValues={initialValues}
@@ -24,15 +31,16 @@ const CommonForm = ({
         {Object.keys(initialValues).map((key) => (
           <React.Fragment key={key}>
             <Form.Group className="mb-3" controlId={key}>
-              <Form.Label className="text-capitalize">{key}</Form.Label>
+              <Form.Label>{t(key)}</Form.Label>
               <Form.Control
                 type={inputsProps[key].type}
-                placeholder={inputsProps[key].placeholder}
+                placeholder={t(inputsProps[key].placeholder)}
                 onChange={handleChange}
                 value={values[key]}
+                autoFocus
               />
               <div className="text-danger" style={{ display: errors[key] && touched[key] && errors[key] ? 'block' : 'none' }}>
-                {errors[key] && touched[key] && errors[key]}
+                {errors[key] && touched[key] && t(errors[key])}
               </div>
             </Form.Group>
             <div className="text-danger" style={{ display: submitError ? 'block' : 'none' }}>
@@ -41,8 +49,9 @@ const CommonForm = ({
           </React.Fragment>
         ))}
         <Button variant="primary" type="submit" disabled={isSubmitting}>
-          {submitButtonText || 'Submit'}
+          {submitButtonText || t('submit')}
         </Button>
+        {children}
       </Form>
     )}
   </Formik>

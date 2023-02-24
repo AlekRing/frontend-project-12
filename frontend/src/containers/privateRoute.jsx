@@ -8,7 +8,7 @@ const PrivateRoute = ({ children, token }) => {
     if (!token || token === 'undefined') navigate('/login');
   }, [navigate, token]);
 
-  return (children);
+  return children;
 };
 
 export default PrivateRoute;
