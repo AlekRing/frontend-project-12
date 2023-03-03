@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Navbar from '../components/Navbar';
-import PrivateRoute from '../containers/PrivateRoute';
+import PrivateRoute from '../containers/privateRoute';
 import ChatPage from '../pages/ChatPage';
 import LoginPage from '../pages/LoginPage';
 import NotFound from '../pages/NotFound';
