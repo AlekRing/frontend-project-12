@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Chat from '../containers/Chat';
+import Chat from '../containers/chat';
 import {
   addToChat, addMessage, addChannel, changeCurrentChannelId, removeChannel, renameChannel,
 } from '../store/reducers/chat';

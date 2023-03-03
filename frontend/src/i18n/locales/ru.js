@@ -5,7 +5,7 @@ export default {
     signup: 'Регистрация',
     password: 'Пароль',
     username: 'Имя пользователя',
-    repeatPassword: 'Повторите пароль',
+    repeatPassword: 'Подтвердите пароль',
     chat: 'Чат',
     notFound: 'Oops... 404 Not Found!',
     chatNamePlaceholder: 'Beep boop',
@@ -36,5 +36,6 @@ export default {
     anauthorized: 'Пользователь не авторизован',
     channelRenamed: 'Канал переименован',
     channelAdded: 'Канал создан',
+    channelDeleted: 'Канал удалён',
   },
 };

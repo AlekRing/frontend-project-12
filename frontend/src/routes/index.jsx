@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import Navbar from '../components/Navbar';
-import PrivateRoute from '../containers/PrivateRoute';
-import ChatPage from '../pages/ChatPage';
-import LoginPage from '../pages/LoginPage';
-import NotFound from '../pages/NotFound';
+import Navbar from '../components/navbar';
+import PrivateRoute from '../containers/privateRoute';
+import LoginPage from '../pages/loginPage';
+import NotFound from '../pages/notFound';
 import SignUpPage from '../pages/SignUpPage';
+import ChatPage from '../pages/chatPage';
 
 const AppRoutes = () => {
   const [token, setToken] = useState(null);
@@ -30,7 +30,7 @@ const AppRoutes = () => {
             <PrivateRoute token={token}>
               <ChatPage token={token} />
             </PrivateRoute>
-    )}
+          )}
         />
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/signup" element={<SignUpPage setToken={setToken} />} />
