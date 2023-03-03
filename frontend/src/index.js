@@ -1,8 +1,9 @@
 import React from 'react';
+import { Provider, ErrorBoundary } from '@rollbar/react';
 import 'bootstrap/dist/css/bootstrap.css';
 import ReactDOM from 'react-dom/client';
 import 'react-toastify/dist/ReactToastify.css';
-import { Provider } from 'react-redux';
+import Redux from 'react-redux';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import i18n from 'i18next';
@@ -13,6 +14,11 @@ import locales from './i18n/locales';
 
 import store from './store';
 
+const rollbarConfig = {
+  accessToken: '465a8bd8d9234685aff8bea4e277acec',
+  environment: 'testenv',
+};
+
 i18n
   .use(initReactI18next)
   .init({
@@ -22,13 +28,17 @@ i18n
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </Provider>
-  </BrowserRouter>,
+  <Provider config={rollbarConfig}>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <Redux.Provider store={store}>
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        </Redux.Provider>
+      </BrowserRouter>
+    </ErrorBoundary>
+  </Provider>,
 );
 
 reportWebVitals();
