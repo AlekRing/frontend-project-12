@@ -3,7 +3,7 @@ import { Provider, ErrorBoundary } from '@rollbar/react';
 import 'bootstrap/dist/css/bootstrap.css';
 import ReactDOM from 'react-dom/client';
 import 'react-toastify/dist/ReactToastify.css';
-import Redux from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import i18n from 'i18next';
@@ -31,11 +31,11 @@ root.render(
   <Provider config={rollbarConfig}>
     <ErrorBoundary>
       <BrowserRouter>
-        <Redux.Provider store={store}>
+        <ReduxProvider store={store}>
           <React.StrictMode>
             <App />
           </React.StrictMode>
-        </Redux.Provider>
+        </ReduxProvider>
       </BrowserRouter>
     </ErrorBoundary>
   </Provider>,
