@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import Navbar from '../components/Navbar';
 import PrivateRoute from '../containers/PrivateRoute';
 import ChatPage from '../pages/ChatPage';
@@ -8,7 +9,7 @@ import NotFound from '../pages/NotFound';
 import SignUpPage from '../pages/SignUpPage';
 
 const AppRoutes = () => {
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [token, setToken] = useState(null);
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -31,10 +32,11 @@ const AppRoutes = () => {
             </PrivateRoute>
     )}
         />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage setToken={setToken} />} />
+        <Route path="/signup" element={<SignUpPage setToken={setToken} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <ToastContainer />
     </>
   );
 };

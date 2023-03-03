@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import CommonForm from '../components/CommonForm';
 
 const initialValuesInputsProps = {
@@ -19,7 +20,7 @@ const signupSchema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], 'passwordsMatch'),
 });
 
-const SignUp = () => {
+const SignUp = ({ setToken }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [submitError, setSubmitError] = useState('');
@@ -28,15 +29,17 @@ const SignUp = () => {
     axios.post('/api/v1/signup', data)
       .then((res) => {
         localStorage.setItem('token', res.data.token);
+        setToken(res.data.token);
         navigate('/');
       })
       .catch((error) => {
-        console.error(error.statusCode);
-        if (error.code === '409' || error.code === 409) {
-          setSubmitError(`Пользователь с логином ${data.username} уже существует`);
+        console.error(error);
+        if (error.response.status === '409' || error.response.status === 409) {
+          setSubmitError(t('userExists'));
+          toast.error(t('userExists'));
           return;
         }
-        setSubmitError(error.code, error.message);
+        setSubmitError(error.response.status, error.message);
       });
   };
 

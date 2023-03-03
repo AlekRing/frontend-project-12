@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import ReactDOM from 'react-dom/client';
+import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';

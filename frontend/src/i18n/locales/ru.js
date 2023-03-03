@@ -30,5 +30,11 @@ export default {
     renameChannelMenu: 'Переименовать',
     deleteChannelMenu: 'Удалить канал',
     passwordsMatch: 'Пароли должны совпадать',
+    wrongCredentials: 'Пароль или имя неверные',
+    somethingWentWrong: 'Что-то пошло не так',
+    userExists: 'Пользователь с таким именем уже существует',
+    anauthorized: 'Пользователь не авторизован',
+    channelRenamed: 'Канал переименован',
+    channelAdded: 'Канал создан',
   },
 };

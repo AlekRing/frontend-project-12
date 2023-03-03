@@ -1,6 +1,7 @@
 import { Formik } from 'formik';
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import filter from 'leo-profanity';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useTranslation } from 'react-i18next';
@@ -11,19 +12,33 @@ import { chatSelector, currentChatMessagesSelector } from '../store/selectors/ch
 import ChatContext from '../store/context/chatContext';
 
 const initialValue = { message: '' };
+const stringReg = /[a-zA-Z]/i;
 
 const Chat = ({ openModal }) => {
   const dispatch = useDispatch();
   const chat = useSelector(chatSelector);
   const messages = useSelector(currentChatMessagesSelector);
+  const formRef = useRef();
   const { t } = useTranslation();
 
   const { socket } = useContext(ChatContext);
 
-  const sendMessage = ({ message }) => {
+  const sendMessage = ({ message }, { resetForm }) => {
     if (!message) return;
 
-    socket.emit('newMessage', { body: message, channelId: chat.currentChannelId });
+    const data = { body: '', channelId: chat.currentChannelId };
+
+    if (stringReg.exec(message)) {
+      filter.loadDictionary();
+
+      data.body = filter.clean(message);
+    } else {
+      filter.loadDictionary('ru');
+      data.body = filter.clean(message);
+    }
+
+    socket.emit('newMessage', data);
+    resetForm();
   };
 
   const changeChannel = (e) => {
@@ -50,8 +65,10 @@ const Chat = ({ openModal }) => {
         <div className="col border rounded pt-2">
           <MessagesList messages={messages} currentChannelId={chat.currentChannelId} t={t} />
           <Formik initialValues={initialValue} onSubmit={sendMessage} validateOnBlur>
-            {({ handleSubmit, handleChange, values }) => (
-              <Form onSubmit={handleSubmit}>
+            {({
+              handleSubmit, handleChange, values, resetForm,
+            }) => (
+              <Form onSubmit={(data) => handleSubmit(data, resetForm)} ref={formRef}>
                 {Object.keys(initialValue).map((key) => (
                   <Form.Group className="mb-3 input-group flex-nowrap" key={key} controlId={key}>
                     <Form.Control

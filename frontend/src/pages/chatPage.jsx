@@ -2,11 +2,14 @@ import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
 import { io } from 'socket.io-client';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import Chat from '../containers/Chat';
 import {
-  addToChat, addMessage, addChannel, changeCurrentChannelId, removeChannel,
+  addToChat, addMessage, addChannel, changeCurrentChannelId, removeChannel, renameChannel,
 } from '../store/reducers/chat';
 import AddChannelModal from '../components/AddChannelModal';
 import ChatContext from '../store/context/chatContext';
@@ -15,6 +18,8 @@ import RenameChannelModal from '../components/RenameChannelModal';
 
 const ChatPage = ({ token }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const [socket, setSocket] = useState(null);
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -49,6 +54,8 @@ const ChatPage = ({ token }) => {
 
       const { id } = payload;
       dispatch(changeCurrentChannelId(id));
+
+      toast.success(t('channelAdded'));
     });
 
     socket.on('removeChannel', (payload) => {
@@ -56,7 +63,8 @@ const ChatPage = ({ token }) => {
     });
 
     socket.on('renameChannel', (payload) => {
-      console.log(payload); // { id: 7, name: "new name channel", removable: true }
+      dispatch(renameChannel(payload));
+      toast.success(t('channelRenamed'));
     });
 
     return () => {
@@ -66,7 +74,7 @@ const ChatPage = ({ token }) => {
       socket.off('removeChannel');
       socket.off('renameChannel');
     };
-  }, [dispatch, socket]);
+  }, [dispatch, socket, t]);
 
   useEffect(() => {
     const getChannels = async () => {
@@ -79,12 +87,19 @@ const ChatPage = ({ token }) => {
 
         dispatch(addToChat(response.data));
       } catch (error) {
-        console.log(error);
+        console.error(error);
+
+        if (error.response.status === 401 || error.response.status === '401') {
+          navigate('/login');
+          return;
+        }
+
+        toast.error(t('somethingWentWrong'));
       }
     };
 
     getChannels();
-  }, [dispatch, token]);
+  }, [dispatch, navigate, t, token]);
 
   const toggleAddModal = () => setIsAddModalOpen((p) => !p);
   const toggleRenameModal = useCallback(

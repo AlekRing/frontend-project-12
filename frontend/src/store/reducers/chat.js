@@ -27,11 +27,22 @@ export const chatSlice = createSlice({
       ...state,
       channels: state.channels.filter((ch) => ch.id !== payload.id),
     }),
+    renameChannel: (state, { payload }) => {
+      const channelIndex = state.channels.findIndex((ch) => ch.id === payload.id);
+
+      const channels = [...state.channels];
+      channels[channelIndex] = payload;
+
+      return {
+        ...state,
+        channels,
+      };
+    },
   },
 });
 
 export const {
-  addToChat, addMessage, changeCurrentChannelId, addChannel, removeChannel,
+  addToChat, addMessage, changeCurrentChannelId, addChannel, removeChannel, renameChannel,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

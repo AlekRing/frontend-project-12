@@ -30,5 +30,11 @@ export default {
     renameChannelMenu: 'Rename',
     deleteChannelMenu: 'Rename',
     passwordsMatch: 'Passwords must match',
+    wrongCredentials: 'Password or name is incorrect',
+    somethingWentWrong: 'Something went wrong',
+    userExists: 'That user name is already exists',
+    anauthorized: 'User is anauthorized',
+    channelRenamed: 'Channel was renamed',
+    channelAdded: 'Channel was added',
   },
 };
