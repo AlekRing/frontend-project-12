@@ -5,8 +5,8 @@ import Navbar from '../components/navbar';
 import PrivateRoute from '../containers/privateRoute';
 import LoginPage from '../pages/loginPage';
 import NotFound from '../pages/notFound';
-import ChatPage from '../pages/ChatPage';
 import SignUpPage from '../pages/signUpPage';
+import ChatPage from '../pages/chatPage';
 
 const AppRoutes = () => {
   const [token, setToken] = useState(null);
