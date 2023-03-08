@@ -36,5 +36,6 @@ export default {
     anauthorized: 'User is anauthorized',
     channelRenamed: 'Channel was renamed',
     channelAdded: 'Channel was added',
+    channelDeleted: 'Channel deleted',
   },
 };

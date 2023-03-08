@@ -60,6 +60,7 @@ const ChatPage = ({ token }) => {
 
     socket.on('removeChannel', (payload) => {
       dispatch(removeChannel(payload));
+      toast.success(t('channelDeleted'));
     });
 
     socket.on('renameChannel', (payload) => {
