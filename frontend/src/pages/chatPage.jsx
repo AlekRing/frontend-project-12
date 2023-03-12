@@ -91,6 +91,7 @@ const ChatPage = ({ token }) => {
         console.error(error);
 
         if (error.response.status === 401 || error.response.status === '401') {
+          localStorage.removeItem('token');
           navigate('/login');
           return;
         }

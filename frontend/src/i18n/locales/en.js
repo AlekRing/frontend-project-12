@@ -5,6 +5,7 @@ export default {
     signup: 'Sign up',
     password: 'Password',
     username: 'User name',
+    yourNickname: 'Your username',
     repeatPassword: 'Repeat password',
     chat: 'Chat',
     notFound: 'Oops... 404 Not Found!',
@@ -37,5 +38,6 @@ export default {
     channelRenamed: 'Channel was renamed',
     channelAdded: 'Channel was added',
     channelDeleted: 'Channel deleted',
+    register: 'Register',
   },
 };

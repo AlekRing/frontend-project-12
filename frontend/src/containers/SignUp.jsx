@@ -14,9 +14,9 @@ const initialValuesInputsProps = {
 const initialValues = { username: '', password: '', repeatPassword: '' };
 
 const signupSchema = Yup.object().shape({
-  username: Yup.string().min(3, 'tooShort').max(20, 'tooLong').required('required'),
-  password: Yup.string().min(6, 'tooShort').max(25, 'tooLong').required('required'),
-  repeatPassword: Yup.string().min(6, 'tooShort').max(25, 'tooLong').required('required')
+  username: Yup.string().min(3, 'tooShortUserName').max(20, 'tooLong').required('required'),
+  password: Yup.string().min(6, 'tooShortPassword').max(25, 'tooLong').required('required'),
+  repeatPassword: Yup.string().min(6, 'tooShortPassword').max(25, 'tooLong').required('required')
     .oneOf([Yup.ref('password'), null], 'passwordsMatch'),
 });
 
@@ -51,7 +51,7 @@ const SignUp = ({ setToken }) => {
         inputsProps={initialValuesInputsProps}
         validationSchema={signupSchema}
         submitError={submitError}
-        submitButtonText={t('signup')}
+        submitButtonText={t('register')}
         t={t}
       />
     </div>

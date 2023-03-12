@@ -52,7 +52,7 @@ const Navbar = ({ token }) => {
   return (
     <nav className="navbar navbar-expand-lg bg-light">
       <div className="container-fluid">
-        <Link className="nav-link" to="/">
+        <Link className="nav-link" to={isToken ? '/' : '/login'}>
           <h1 className="fs-5">
             Hexlet Chat
           </h1>
