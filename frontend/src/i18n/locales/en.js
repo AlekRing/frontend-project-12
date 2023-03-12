@@ -22,7 +22,7 @@ export default {
     addChannelButton: '+',
     submitAddChannelButton: 'Add Channel',
     channels: 'Channels ',
-    channelNameStart: '#',
+    channelNameStart: '# ',
     uniqueChannelNameError: 'Name of the channel must be unique',
     addChannelTitle: 'Add new channel',
     required: 'The field is required',
