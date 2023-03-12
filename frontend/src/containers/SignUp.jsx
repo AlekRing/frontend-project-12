@@ -14,10 +14,12 @@ const initialValuesInputsProps = {
 const initialValues = { usernameRegister: '', password: '', repeatPassword: '' };
 
 const signupSchema = Yup.object().shape({
-  usernameRegister: Yup.string().min(3, 'tooShortUserName').max(20, 'tooLong').required('required'),
-  password: Yup.string().min(6, 'tooShortPassword').max(25, 'tooLong').required('required'),
-  repeatPassword: Yup.string().min(6, 'tooShortPassword').max(25, 'tooLong').required('required')
-    .oneOf([Yup.ref('password'), null], 'passwordsMatch'),
+  usernameRegister: Yup.string().trim().min(3, 'tooShortUserName').max(20, 'tooLong')
+    .required('required'),
+  password: Yup.string().trim().min(6, 'tooShortPassword').required('required'),
+  repeatPassword: Yup.string()
+    .trim()
+    .test('repeatPassword', 'passwordsMatch', (value, context) => value === context.parent.password),
 });
 
 const SignUp = ({ setToken }) => {
@@ -28,12 +30,15 @@ const SignUp = ({ setToken }) => {
   const handleSubmit = (data) => {
     const { usernameRegister, password, repeatPassword } = data;
     const readyData = {
-      password, repeatPassword, username: usernameRegister,
+      password,
+      repeatPassword,
+      username: usernameRegister,
     };
 
     console.log(readyData);
 
-    axios.post('/api/v1/signup', readyData)
+    axios
+      .post('/api/v1/signup', readyData)
       .then((res) => {
         localStorage.setItem('token', res.data.token);
         setToken(res.data.token);

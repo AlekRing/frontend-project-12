@@ -39,9 +39,9 @@ const CommonForm = ({
                 value={values[key]}
                 autoFocus
               />
-              <div className="text-danger" style={{ display: errors[key] && touched[key] && errors[key] ? 'block' : 'none' }}>
+              <Form.Control.Feedback className="text-danger" style={{ display: errors[key] && touched[key] && errors[key] ? 'block' : 'none' }}>
                 {errors[key] && touched[key] && t(errors[key])}
-              </div>
+              </Form.Control.Feedback>
             </Form.Group>
             <div className="text-danger" style={{ display: submitError ? 'block' : 'none' }}>
               {submitError}
