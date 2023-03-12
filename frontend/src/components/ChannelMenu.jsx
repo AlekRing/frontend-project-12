@@ -24,6 +24,7 @@ const ChannelMenu = ({ channelId }) => {
 
   return (
     <DropdownButton title="" size="sm" variant="secondary" onClick={handleClick}>
+      <span className="visually-hidden">{t('channelMenu')}</span>
       <Dropdown.Item onClick={handleRenameChannel}>{t('renameChannelMenu')}</Dropdown.Item>
       <Dropdown.Divider />
       <Dropdown.Item className="text-danger" onClick={handleRemoveChannel}>{t('deleteChannelMenu')}</Dropdown.Item>

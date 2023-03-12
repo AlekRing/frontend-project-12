@@ -41,5 +41,6 @@ export default {
     channelAdded: 'Канал создан',
     channelDeleted: 'Канал удалён',
     ariaNewMessage: 'Новое сообщение',
+    channelMenu: 'Управление каналом',
   },
 };

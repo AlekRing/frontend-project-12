@@ -40,5 +40,6 @@ export default {
     channelDeleted: 'Channel deleted',
     register: 'Register',
     ariaNewMessage: 'New message',
+    channelMenu: 'Channel manage',
   },
 };
