@@ -7,14 +7,14 @@ import { toast } from 'react-toastify';
 import CommonForm from '../components/CommonForm';
 
 const initialValuesInputsProps = {
-  username: { type: 'text', placeholder: 'username' },
+  usernameRegister: { type: 'text', placeholder: 'username' },
   password: { type: 'password', placeholder: 'password' },
   repeatPassword: { type: 'password', placeholder: 'repeatPassword' },
 };
-const initialValues = { username: '', password: '', repeatPassword: '' };
+const initialValues = { usernameRegister: '', password: '', repeatPassword: '' };
 
 const signupSchema = Yup.object().shape({
-  username: Yup.string().min(3, 'tooShortUserName').max(20, 'tooLong').required('required'),
+  usernameRegister: Yup.string().min(3, 'tooShortUserName').max(20, 'tooLong').required('required'),
   password: Yup.string().min(6, 'tooShortPassword').max(25, 'tooLong').required('required'),
   repeatPassword: Yup.string().min(6, 'tooShortPassword').max(25, 'tooLong').required('required')
     .oneOf([Yup.ref('password'), null], 'passwordsMatch'),
@@ -26,7 +26,14 @@ const SignUp = ({ setToken }) => {
   const [submitError, setSubmitError] = useState('');
 
   const handleSubmit = (data) => {
-    axios.post('/api/v1/signup', data)
+    const { usernameRegister, password, repeatPassword } = data;
+    const readyData = {
+      password, repeatPassword, username: usernameRegister,
+    };
+
+    console.log(readyData);
+
+    axios.post('/api/v1/signup', readyData)
       .then((res) => {
         localStorage.setItem('token', res.data.token);
         setToken(res.data.token);

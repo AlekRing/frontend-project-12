@@ -5,6 +5,7 @@ export default {
     signup: 'Регистрация',
     password: 'Пароль',
     username: 'Ваш ник',
+    usernameRegister: 'Имя пользователя',
     repeatPassword: 'Подтвердите пароль',
     chat: 'Чат',
     notFound: 'Oops... 404 Not Found!',
