@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import CommonForm from './CommonForm';
 import ChatModal from '../containers/ChatModal';
 import { channelsNamesSelector } from '../store/selectors/chat';
-import ChatContext from '../store/context/chatContext';
+import SocketContext from '../store/context/socketContext';
 
 const initialValues = { channelName: '' };
 const initialValuesInputsProps = { channelName: { type: 'text', placeholder: 'chatNamePlaceholder' } };
@@ -24,7 +24,7 @@ const AddChannelModal = ({ toggle, isOpen }) => {
 
   const channelsNames = useSelector(channelsNamesSelector);
 
-  const { socket } = useContext(ChatContext);
+  const { socket } = useContext(SocketContext);
 
   useEffect(() => {
     if (!isOpen) setSubmitError('');

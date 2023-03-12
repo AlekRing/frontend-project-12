@@ -2,11 +2,13 @@ import React, { useContext } from 'react';
 import Button from 'react-bootstrap/esm/Button';
 import { useTranslation } from 'react-i18next';
 import ChatModal from '../containers/ChatModal';
-import ChatContext from '../store/context/chatContext';
+import ChannelActionsContext from '../store/context/channelActionsContext';
+import SocketContext from '../store/context/socketContext';
 
 const RemoveChannelModal = ({ toggle, isOpen }) => {
   const { t } = useTranslation();
-  const { socket, changingChannelId } = useContext(ChatContext);
+  const { changingChannelId } = useContext(ChannelActionsContext);
+  const { socket } = useContext(SocketContext);
 
   const handleSubmit = async () => {
     socket.emit('removeChannel', { id: changingChannelId });

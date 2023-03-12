@@ -11,7 +11,6 @@ import { initReactI18next } from 'react-i18next';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import locales from './i18n/locales';
-
 import store from './store';
 
 const rollbarConfig = {

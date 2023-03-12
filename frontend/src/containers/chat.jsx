@@ -9,7 +9,7 @@ import ChannelsList from '../components/channelsList';
 import MessagesList from '../components/messagesList';
 import { changeCurrentChannelId } from '../store/reducers/chat';
 import { chatSelector, currentChatMessagesSelector } from '../store/selectors/chat';
-import ChatContext from '../store/context/chatContext';
+import SocketContext from '../store/context/socketContext';
 
 const initialValue = { message: '' };
 const stringReg = /[a-zA-Z]/i;
@@ -21,7 +21,7 @@ const Chat = ({ openModal }) => {
   const formRef = useRef();
   const { t } = useTranslation();
 
-  const { socket } = useContext(ChatContext);
+  const { socket } = useContext(SocketContext);
 
   const sendMessage = ({ message }, { resetForm }) => {
     if (!message) return;

@@ -1,11 +1,15 @@
 import { useContext } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useTranslation } from 'react-i18next';
-import ChatContext from '../store/context/chatContext';
+import ChannelActionsContext from '../store/context/channelActionsContext';
 
 const ChannelMenu = ({ channelId }) => {
   const { t } = useTranslation();
-  const { toggleRemoveModal, toggleRenameModal, setChangingChannelId } = useContext(ChatContext);
+  const {
+    toggleRemoveModal,
+    toggleRenameModal,
+    setChangingChannelId,
+  } = useContext(ChannelActionsContext);
 
   const handleRemoveChannel = () => {
     toggleRemoveModal();
