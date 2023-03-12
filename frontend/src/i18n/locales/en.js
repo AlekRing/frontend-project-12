@@ -39,5 +39,6 @@ export default {
     channelAdded: 'Channel was added',
     channelDeleted: 'Channel deleted',
     register: 'Register',
+    ariaNewMessage: 'New message',
   },
 };

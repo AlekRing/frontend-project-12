@@ -74,6 +74,7 @@ const Chat = ({ openModal }) => {
                     <Form.Control
                       type="text"
                       placeholder={t('startMessagePlaceholder')}
+                      aria-label={t('ariaNewMessage')}
                       onChange={handleChange}
                       className="form-control"
                       name={key}

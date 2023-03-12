@@ -40,5 +40,6 @@ export default {
     channelRenamed: 'Канал переименован',
     channelAdded: 'Канал создан',
     channelDeleted: 'Канал удалён',
+    ariaNewMessage: 'Новое сообщение',
   },
 };
