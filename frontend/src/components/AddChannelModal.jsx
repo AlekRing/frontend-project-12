@@ -6,16 +6,13 @@ import { useTranslation } from 'react-i18next';
 import CommonForm from './CommonForm';
 import ChatModal from '../containers/ChatModal';
 import { channelsNamesSelector } from '../store/selectors/chat';
-import SocketContext from '../store/context/socketContext';
+import ChatContext from '../store/context/chatContext';
 
 const initialValues = { channelName: '' };
 const initialValuesInputsProps = { channelName: { type: 'text', placeholder: 'chatNamePlaceholder' } };
 
 const channelNameSchema = Yup.object().shape({
-  channelName: Yup.string()
-    .min(2, 'tooShort')
-    .max(50, 'tooLong')
-    .required('required'),
+  channelName: Yup.string().min(2, 'tooShort').max(50, 'tooLong').required('required'),
 });
 
 const AddChannelModal = ({ toggle, isOpen }) => {
@@ -24,7 +21,7 @@ const AddChannelModal = ({ toggle, isOpen }) => {
 
   const channelsNames = useSelector(channelsNamesSelector);
 
-  const { socket } = useContext(SocketContext);
+  const { chatActions } = useContext(ChatContext);
 
   useEffect(() => {
     if (!isOpen) setSubmitError('');
@@ -38,7 +35,7 @@ const AddChannelModal = ({ toggle, isOpen }) => {
     try {
       uniqueSchema.validateSync(channelName);
 
-      socket.emit('newChannel', { name: channelName });
+      chatActions.createChannel(channelName);
       toggle();
     } catch (error) {
       setSubmitError(t('uniqueChannelNameError'));
@@ -56,7 +53,9 @@ const AddChannelModal = ({ toggle, isOpen }) => {
         submitButtonText={t('submitAddChannelButton')}
         t={t}
       >
-        <Button variant="secondary" type="button" onClick={toggle} className="d-inline ms-3">{t('cancel')}</Button>
+        <Button variant="secondary" type="button" onClick={toggle} className="d-inline ms-3">
+          {t('cancel')}
+        </Button>
       </CommonForm>
     </ChatModal>
   );

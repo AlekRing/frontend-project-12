@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
-export const chatSelector = (state) => state.chat;
-export const currentChatMessagesSelector = (state) => state.chat.messages.filter(
-  (message) => message.channelId === state.chat.currentChannelId,
+export const chatChannelsSelector = (state) => state.chatChannels;
+export const currentChatMessagesSelector = (state) => state.chatMessages.messages.filter(
+  (message) => message.channelId === state.chatChannels.currentChannelId,
 );
-export const channelsNamesSelector = (state) => state.chat.channels.map((ch) => ch.name);
+export const channelsNamesSelector = (state) => state.chatChannels.channels.map((ch) => ch.name);

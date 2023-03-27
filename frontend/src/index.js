@@ -14,7 +14,7 @@ import locales from './i18n/locales';
 import store from './store';
 
 const rollbarConfig = {
-  accessToken: '465a8bd8d9234685aff8bea4e277acec',
+  accessToken: process.env.ROLLBAR_CONFIG_TOKEN,
   environment: 'testenv',
 };
 

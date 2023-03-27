@@ -3,22 +3,26 @@ import Button from 'react-bootstrap/esm/Button';
 import { useTranslation } from 'react-i18next';
 import ChatModal from '../containers/ChatModal';
 import ChannelActionsContext from '../store/context/channelActionsContext';
-import SocketContext from '../store/context/socketContext';
+import ChatContext from '../store/context/chatContext';
 
 const RemoveChannelModal = ({ toggle, isOpen }) => {
   const { t } = useTranslation();
   const { changingChannelId } = useContext(ChannelActionsContext);
-  const { socket } = useContext(SocketContext);
+  const { chatActions } = useContext(ChatContext);
 
   const handleSubmit = async () => {
-    socket.emit('removeChannel', { id: changingChannelId });
+    chatActions.deleteChannel(changingChannelId);
     toggle();
   };
 
   return (
     <ChatModal isOpen={isOpen} title={t('removeChannelModal')}>
-      <Button variant="danger" type="button" onClick={handleSubmit} className="d-inline me-3">{t('removeChannel')}</Button>
-      <Button variant="secondary" type="button" onClick={toggle} className="d-inline">{t('cancel')}</Button>
+      <Button variant="danger" type="button" onClick={handleSubmit} className="d-inline me-3">
+        {t('removeChannel')}
+      </Button>
+      <Button variant="secondary" type="button" onClick={toggle} className="d-inline">
+        {t('cancel')}
+      </Button>
     </ChatModal>
   );
 };

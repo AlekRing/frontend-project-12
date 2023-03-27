@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Chat from '../containers/chat';
-import { addToChat } from '../store/reducers/chat';
+import { addToChat } from '../store/reducers/chatChannels';
 import AddChannelModal from '../components/AddChannelModal';
 import ChannelActionsContext from '../store/context/channelActionsContext';
 import RemoveChannelModal from '../components/RemoveChannelModal';
@@ -49,17 +49,11 @@ const ChatPage = ({ token }) => {
     };
 
     getChannels();
-  }, [dispatch, navigate, t, token]);
+  }, []);
 
   const toggleAddModal = () => setIsAddModalOpen((p) => !p);
-  const toggleRenameModal = useCallback(
-    () => setIsRenameModalOpen((p) => !p),
-    [setIsRenameModalOpen],
-  );
-  const toggleRemoveModal = useCallback(
-    () => setIsRemoveModalOpen((p) => !p),
-    [setIsRemoveModalOpen],
-  );
+  const toggleRenameModal = useCallback(() => setIsRenameModalOpen((p) => !p), [setIsRenameModalOpen]);
+  const toggleRemoveModal = useCallback(() => setIsRemoveModalOpen((p) => !p), [setIsRemoveModalOpen]);
 
   const passingContext = useMemo(
     () => ({

@@ -7,26 +7,26 @@ import Button from 'react-bootstrap/Button';
 import { useTranslation } from 'react-i18next';
 import ChannelsList from '../components/channelsList';
 import MessagesList from '../components/messagesList';
-import { changeCurrentChannelId } from '../store/reducers/chat';
-import { chatSelector, currentChatMessagesSelector } from '../store/selectors/chat';
-import SocketContext from '../store/context/socketContext';
+import { changeCurrentChannelId } from '../store/reducers/chatChannels';
+import { chatChannelsSelector, currentChatMessagesSelector } from '../store/selectors/chat';
+import ChatContext from '../store/context/chatContext';
 
 const initialValue = { message: '' };
 const stringReg = /[a-zA-Z]/i;
 
 const Chat = ({ openModal }) => {
   const dispatch = useDispatch();
-  const chat = useSelector(chatSelector);
+  const chatChannels = useSelector(chatChannelsSelector);
   const messages = useSelector(currentChatMessagesSelector);
   const formRef = useRef();
   const { t } = useTranslation();
 
-  const { socket } = useContext(SocketContext);
+  const { chatActions } = useContext(ChatContext);
 
   const sendMessage = ({ message }, { resetForm }) => {
     if (!message) return;
 
-    const data = { body: '', channelId: chat.currentChannelId };
+    const data = { body: '', channelId: chatChannels.currentChannelId };
 
     if (stringReg.exec(message)) {
       filter.loadDictionary();
@@ -37,17 +37,16 @@ const Chat = ({ openModal }) => {
       data.body = filter.clean(message);
     }
 
-    socket.emit('newMessage', data);
+    chatActions.sendMessage(data);
     resetForm();
   };
 
   const changeChannel = (e) => {
     const channelId = Number(e.target.getAttribute('data-id'));
 
-    if (channelId === chat.currentChannelId) return;
+    if (channelId === chatChannels.currentChannelId) return;
 
     dispatch(changeCurrentChannelId(channelId));
-    console.log(channelId);
   };
 
   return (
@@ -55,15 +54,15 @@ const Chat = ({ openModal }) => {
       <div className="row align-items-start pt-4">
         <div className="col" style={{ maxWidth: '230px' }}>
           <ChannelsList
-            channels={chat.channels}
+            channels={chatChannels.channels}
             changeChannel={changeChannel}
             openModal={openModal}
-            currentChannelId={chat.currentChannelId}
+            currentChannelId={chatChannels.currentChannelId}
             t={t}
           />
         </div>
         <div className="col border rounded pt-2">
-          <MessagesList messages={messages} currentChannelId={chat.currentChannelId} t={t} />
+          <MessagesList messages={messages} currentChannelId={chatChannels.currentChannelId} t={t} />
           <Formik initialValues={initialValue} onSubmit={sendMessage} validateOnBlur>
             {({
               handleSubmit, handleChange, values, resetForm,

@@ -1,20 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  channels: [],
-  currentChannelId: null,
-  messages: [],
-};
-
-export const chatSlice = createSlice({
-  name: 'chat',
-  initialState,
+export const chatChannelsSlice = createSlice({
+  name: 'chatChannels',
+  initialState: {
+    channels: [],
+    currentChannelId: null,
+  },
   reducers: {
-    addToChat: (state, { payload }) => (payload),
-    addMessage: (state, { payload }) => ({
-      ...state,
-      messages: [...state.messages, payload],
-    }),
     changeCurrentChannelId: (state, { payload }) => ({
       ...state,
       currentChannelId: payload,
@@ -42,7 +34,7 @@ export const chatSlice = createSlice({
 });
 
 export const {
-  addToChat, addMessage, changeCurrentChannelId, addChannel, removeChannel, renameChannel,
-} = chatSlice.actions;
+  changeCurrentChannelId, addChannel, removeChannel, renameChannel,
+} = chatChannelsSlice.actions;
 
-export default chatSlice.reducer;
+export default chatChannelsSlice.reducer;

@@ -1,20 +1,17 @@
 import React, { useMemo } from 'react';
 import AppRoutes from './routes';
-import SocketContext from './store/context/socketContext';
-import useSocket from './hooks/useSocket';
+import ChatContext from './store/context/chatContext';
+import useChat from './hooks/useChat';
 
 const App = () => {
-  const socket = useSocket();
+  const chatActions = useChat();
 
-  const passingContext = useMemo(
-    () => ({ socket }),
-    [socket],
-  );
+  const passingContext = useMemo(() => ({ chatActions }), [chatActions]);
 
   return (
-    <SocketContext.Provider value={passingContext}>
+    <ChatContext.Provider value={passingContext}>
       <AppRoutes />
-    </SocketContext.Provider>
+    </ChatContext.Provider>
   );
 };
 

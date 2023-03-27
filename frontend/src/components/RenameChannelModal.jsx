@@ -7,16 +7,13 @@ import CommonForm from './CommonForm';
 import ChatModal from '../containers/ChatModal';
 import { channelsNamesSelector } from '../store/selectors/chat';
 import ChannelActionsContext from '../store/context/channelActionsContext';
-import SocketContext from '../store/context/socketContext';
+import ChatContext from '../store/context/chatContext';
 
 const initialValues = { channelName: '' };
 const initialValuesInputsProps = { channelName: { type: 'text', placeholder: 'chatNamePlaceholder' } };
 
 const channelNameSchema = Yup.object().shape({
-  channelName: Yup.string()
-    .min(2, 'Too Short!')
-    .max(25, 'Too Long!')
-    .required('Required'),
+  channelName: Yup.string().min(2, 'Too Short!').max(25, 'Too Long!').required('Required'),
 });
 
 const RenameChannelModal = ({ toggle, isOpen }) => {
@@ -26,7 +23,7 @@ const RenameChannelModal = ({ toggle, isOpen }) => {
   const channelsNames = useSelector(channelsNamesSelector);
 
   const { changingChannelId } = useContext(ChannelActionsContext);
-  const { socket } = useContext(SocketContext);
+  const { chatActions } = useContext(ChatContext);
 
   useEffect(() => {
     if (!isOpen) setSubmitError('');
@@ -40,7 +37,7 @@ const RenameChannelModal = ({ toggle, isOpen }) => {
     try {
       uniqueSchema.validateSync(channelName);
 
-      socket.emit('renameChannel', { id: changingChannelId, name: channelName });
+      chatActions.renameChannel(changingChannelId, channelName);
       toggle();
     } catch (error) {
       setSubmitError('Name of the channel must be unique');
@@ -57,7 +54,9 @@ const RenameChannelModal = ({ toggle, isOpen }) => {
         submitError={submitError}
         t={t}
       >
-        <Button variant="secondary" type="button" onClick={toggle} className="d-inline ms-3">{t('cancel')}</Button>
+        <Button variant="secondary" type="button" onClick={toggle} className="d-inline ms-3">
+          {t('cancel')}
+        </Button>
       </CommonForm>
     </ChatModal>
   );

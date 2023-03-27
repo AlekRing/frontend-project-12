@@ -2,7 +2,7 @@ install:
 	npm ci
 
 front:
-	make -C frontend & npm start
+	make -C frontend
 
 back:
 	npx start-server

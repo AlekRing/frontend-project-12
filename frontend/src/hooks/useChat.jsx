@@ -3,15 +3,19 @@ import { useTranslation } from 'react-i18next';
 import { io } from 'socket.io-client';
 import { toast } from 'react-toastify';
 import {
-  addMessage, addChannel, changeCurrentChannelId, removeChannel, renameChannel,
-} from '../store/reducers/chat';
+  addMessage,
+  addChannel,
+  changeCurrentChannelId,
+  removeChannel,
+  renameChannel as renameChannelReducer,
+} from '../store/reducers/chatChannels';
 
 const socketInit = {
   socket: null,
   isReady: false,
 };
 
-const useSocket = () => {
+const useChat = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -37,13 +41,36 @@ const useSocket = () => {
   });
 
   socketInit.socket.on('renameChannel', (payload) => {
-    dispatch(renameChannel(payload));
+    dispatch(renameChannelReducer(payload));
     toast.success(t('channelRenamed'));
   });
 
   socketInit.isReady = true;
 
-  return socketInit.socket;
+  const { socket } = socketInit;
+
+  const sendMessage = (data) => {
+    socket.emit('newMessage', data);
+  };
+
+  const createChannel = (name) => {
+    socket.emit('newChannel', { name });
+  };
+
+  const deleteChannel = (id) => {
+    socket.emit('removeChannel', { id });
+  };
+
+  const renameChannel = (id, name) => {
+    socket.emit('renameChannel', { id, name });
+  };
+
+  return {
+    sendMessage,
+    createChannel,
+    deleteChannel,
+    renameChannel,
+  };
 };
 
-export default useSocket;
+export default useChat;
