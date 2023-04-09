@@ -65,7 +65,11 @@ const Chat = () => {
           />
         </div>
         <div className="col border rounded pt-2">
-          <MessagesList messages={messages} currentChannelId={chatChannels.currentChannelId} t={t} />
+          <MessagesList
+            messages={messages}
+            currentChannelId={chatChannels.currentChannelId}
+            t={t}
+          />
           <Formik initialValues={initialValue} onSubmit={sendMessage} validateOnBlur>
             {({
  handleSubmit, handleChange, values, resetForm,

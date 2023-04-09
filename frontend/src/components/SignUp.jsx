@@ -52,7 +52,11 @@ const SignUp = () => {
     password: Yup.string().trim().min(6, 'tooShortPassword').required('required'),
     repeatPassword: Yup.string()
       .trim()
-      .test('repeatPassword', 'passwordsMatch', (value, context) => value === context.parent.password),
+      .test(
+        'repeatPassword',
+        'passwordsMatch',
+        (value, context) => value === context.parent.password,
+      ),
   });
 
   return (

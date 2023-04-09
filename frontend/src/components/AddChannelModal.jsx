@@ -10,7 +10,9 @@ import ChatContext from '../store/context/chatContext';
 import { toggleAddChannelModal } from '../store/reducers/modals';
 
 const initialValues = { channelName: '' };
-const initialValuesInputsProps = { channelName: { type: 'text', placeholder: 'chatNamePlaceholder' } };
+const initialValuesInputsProps = {
+  channelName: { type: 'text', placeholder: 'chatNamePlaceholder' },
+};
 
 const channelNameSchema = Yup.object().shape({
   channelName: Yup.string().min(2, 'tooShort').max(50, 'tooLong').required('required'),

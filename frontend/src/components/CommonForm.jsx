@@ -16,7 +16,12 @@ const CommonForm = ({
   const { t } = useTranslation();
 
   return (
-    <Formik initialValues={initialValues} onSubmit={trySubmit} validateOnBlur validationSchema={validationSchema}>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={trySubmit}
+      validateOnBlur
+      validationSchema={validationSchema}
+    >
       {({
  errors, touched, handleChange, handleSubmit, isSubmitting, values,
 }) => (

@@ -5,12 +5,18 @@ import Button from 'react-bootstrap/esm/Button';
 import { useTranslation } from 'react-i18next';
 import CommonForm from './CommonForm';
 import ChatModal from './ChatModal';
-import { channelsNamesSelector, selectChangingChannel, selectChangingChannelId } from '../store/selectors/selectors';
+import {
+    channelsNamesSelector,
+    selectChangingChannel,
+    selectChangingChannelId,
+} from '../store/selectors/selectors';
 import ChatContext from '../store/context/chatContext';
 import { toggleRenameModal } from '../store/reducers/modals';
 
 const initialValues = { channelName: '' };
-const initialValuesInputsProps = { channelName: { type: 'text', placeholder: 'chatNamePlaceholder' } };
+const initialValuesInputsProps = {
+  channelName: { type: 'text', placeholder: 'chatNamePlaceholder' },
+};
 
 const channelNameSchema = Yup.object().shape({
   channelName: Yup.string().min(2, 'Too Short!').max(25, 'Too Long!').required('Required'),

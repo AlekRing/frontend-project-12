@@ -11,7 +11,11 @@ const ChannelsList = ({
   <ul className="list-group">
     <li className="list-group-item text-capitalize fw-bold">
       <span className="fw-bold">{t('channels')}</span>
-      <button className={classnames('fw-bold', styles.channelsPlus)} onClick={openModal} type="button">
+      <button
+        className={classnames('fw-bold', styles.channelsPlus)}
+        onClick={openModal}
+        type="button"
+      >
         {t('addChannelButton')}
       </button>
     </li>
