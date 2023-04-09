@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -17,7 +17,6 @@ const initialValues = { username: '', password: '' };
 const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [submitError, setSubmitError] = useState('');
   const { logIn, isLoggedIn } = useAuth();
 
   useEffect(() => {
@@ -34,7 +33,6 @@ const Login = () => {
         console.error(error);
 
         if (error.response.status === 401) {
-          setSubmitError(t('wrongCredentials'));
           toast.error(t('wrongCredentials'));
           return;
         }
@@ -54,7 +52,6 @@ const Login = () => {
         initialValues={initialValues}
         inputsProps={initialValuesInputsProps}
         validationSchema={loginSchema}
-        submitError={submitError}
         submitButtonText={t('login')}
       />
     </div>

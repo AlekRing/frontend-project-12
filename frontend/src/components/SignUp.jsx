@@ -32,7 +32,6 @@ const SignUp = () => {
       .catch((error) => {
         console.error(error);
         if (error.response.status === '409' || error.response.status === 409) {
-          setSubmitError(t('userExists'));
           toast.error(t('userExists'));
           return;
         }
