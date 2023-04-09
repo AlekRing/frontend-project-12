@@ -1,20 +1,21 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../hooks/useAuth';
 
-const UnAuthorizedHeader = ({ isLogin, t }) => (isLogin ? (
+const UnAuthorizedHeader = ({ isLoginPage, t }) => (isLoginPage ? (
   <li className="nav-item">
     <Link className="nav-link" to="/signup">
       {t('signup')}
     </Link>
   </li>
-) : (
-  <li className="nav-item">
-    <Link className="nav-link" to="/login">
-      {t('login')}
-    </Link>
-  </li>
-));
+  ) : (
+    <li className="nav-item">
+      <Link className="nav-link" to="/login">
+        {t('login')}
+      </Link>
+    </li>
+  ));
 
 const AuthorizedHeader = ({ handleClick, t }) => (
   <>
@@ -36,31 +37,25 @@ const AuthorizedHeader = ({ handleClick, t }) => (
   </>
 );
 
-const Navbar = ({ token }) => {
-  const navigate = useNavigate();
+const Navbar = () => {
   const { pathname } = useLocation();
   const { t } = useTranslation();
+  const { isLoggedIn, logOut } = useAuth();
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
-
-  const isToken = token !== 'undefined' && !!token;
-  const isLogin = pathname.slice(1) === 'login';
+  const isLoginPage = pathname.slice(1) === 'login';
 
   return (
     <nav className="navbar navbar-expand-lg bg-light">
       <div className="container-fluid">
-        <Link className="nav-link" to={isToken ? '/' : '/login'}>
-          <h1 className="fs-5">
-            Hexlet Chat
-          </h1>
+        <Link className="nav-link" to={isLoggedIn ? '/' : '/login'}>
+          <h1 className="fs-5">Hexlet Chat</h1>
         </Link>
         <ul className="navbar-nav d-flex flex-row">
-          {isToken
-            ? <AuthorizedHeader handleClick={logout} t={t} />
-            : <UnAuthorizedHeader isLogin={isLogin} t={t} />}
+          {isLoggedIn ? (
+            <AuthorizedHeader handleClick={logOut} t={t} />
+          ) : (
+            <UnAuthorizedHeader isLoginPage={isLoginPage} t={t} />
+          )}
         </ul>
       </div>
     </nav>

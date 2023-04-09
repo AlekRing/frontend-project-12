@@ -2,7 +2,7 @@
 const webSoket = new WebSocket('ws:://localhost:5001/');
 
 webSoket.onerror = (error) => {
-  console.log(error);
+  console.error(error);
 };
 
 webSoket.onmessage = (event) => {

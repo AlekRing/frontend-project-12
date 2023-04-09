@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
-const PrivateRoute = ({ children, token }) => {
+const PrivateRoute = ({ children }) => {
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    if (!token || token === 'undefined') navigate('/login');
-  }, [navigate, token]);
+    if (!isLoggedIn) navigate('/login');
+  }, [navigate, isLoggedIn]);
 
   return children;
 };

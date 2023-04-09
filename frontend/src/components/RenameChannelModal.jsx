@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/esm/Button';
 import { useTranslation } from 'react-i18next';
 import CommonForm from './CommonForm';
-import ChatModal from '../containers/ChatModal';
-import { channelsNamesSelector } from '../store/selectors/chat';
-import ChannelActionsContext from '../store/context/channelActionsContext';
+import ChatModal from './ChatModal';
+import { channelsNamesSelector, selectChangingChannel, selectChangingChannelId } from '../store/selectors/selectors';
 import ChatContext from '../store/context/chatContext';
+import { toggleRenameModal } from '../store/reducers/modals';
 
 const initialValues = { channelName: '' };
 const initialValuesInputsProps = { channelName: { type: 'text', placeholder: 'chatNamePlaceholder' } };
@@ -16,14 +16,18 @@ const channelNameSchema = Yup.object().shape({
   channelName: Yup.string().min(2, 'Too Short!').max(25, 'Too Long!').required('Required'),
 });
 
-const RenameChannelModal = ({ toggle, isOpen }) => {
+const RenameChannelModal = ({ isOpen }) => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const [submitError, setSubmitError] = useState('');
 
   const channelsNames = useSelector(channelsNamesSelector);
+  const changingChannelId = useSelector(selectChangingChannelId);
+  const changingChannelName = useSelector(selectChangingChannel)?.name;
 
-  const { changingChannelId } = useContext(ChannelActionsContext);
   const { chatActions } = useContext(ChatContext);
+
+  const toggle = () => dispatch(toggleRenameModal());
 
   useEffect(() => {
     if (!isOpen) setSubmitError('');
@@ -44,6 +48,8 @@ const RenameChannelModal = ({ toggle, isOpen }) => {
     }
   };
 
+  initialValues.channelName = changingChannelName;
+
   return (
     <ChatModal isOpen={isOpen} title={t('renameChannelModal')}>
       <CommonForm
@@ -52,7 +58,6 @@ const RenameChannelModal = ({ toggle, isOpen }) => {
         inputsProps={initialValuesInputsProps}
         validationSchema={channelNameSchema}
         submitError={submitError}
-        t={t}
       >
         <Button variant="secondary" type="button" onClick={toggle} className="d-inline ms-3">
           {t('cancel')}

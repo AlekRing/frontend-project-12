@@ -5,16 +5,17 @@ import filter from 'leo-profanity';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useTranslation } from 'react-i18next';
-import ChannelsList from '../components/channelsList';
-import MessagesList from '../components/messagesList';
+import ChannelsList from './channelsList';
+import MessagesList from './messagesList';
 import { changeCurrentChannelId } from '../store/reducers/chatChannels';
-import { chatChannelsSelector, currentChatMessagesSelector } from '../store/selectors/chat';
+import { chatChannelsSelector, currentChatMessagesSelector } from '../store/selectors/selectors';
 import ChatContext from '../store/context/chatContext';
+import { toggleAddChannelModal } from '../store/reducers/modals';
 
 const initialValue = { message: '' };
 const stringReg = /[a-zA-Z]/i;
 
-const Chat = ({ openModal }) => {
+const Chat = () => {
   const dispatch = useDispatch();
   const chatChannels = useSelector(chatChannelsSelector);
   const messages = useSelector(currentChatMessagesSelector);
@@ -49,6 +50,8 @@ const Chat = ({ openModal }) => {
     dispatch(changeCurrentChannelId(channelId));
   };
 
+  const toggleAddModal = () => dispatch(toggleAddChannelModal());
+
   return (
     <div className="container">
       <div className="row align-items-start pt-4">
@@ -56,7 +59,7 @@ const Chat = ({ openModal }) => {
           <ChannelsList
             channels={chatChannels.channels}
             changeChannel={changeChannel}
-            openModal={openModal}
+            openModal={toggleAddModal}
             currentChannelId={chatChannels.currentChannelId}
             t={t}
           />
@@ -65,26 +68,26 @@ const Chat = ({ openModal }) => {
           <MessagesList messages={messages} currentChannelId={chatChannels.currentChannelId} t={t} />
           <Formik initialValues={initialValue} onSubmit={sendMessage} validateOnBlur>
             {({
-              handleSubmit, handleChange, values, resetForm,
-            }) => (
-              <Form onSubmit={(data) => handleSubmit(data, resetForm)} ref={formRef}>
-                {Object.keys(initialValue).map((key) => (
-                  <Form.Group className="mb-3 input-group flex-nowrap" key={key} controlId={key}>
-                    <Form.Control
-                      type="text"
-                      placeholder={t('startMessagePlaceholder')}
-                      aria-label={t('ariaNewMessage')}
-                      onChange={handleChange}
-                      className="form-control"
-                      name={key}
-                      value={values[key]}
-                    />
-                    <Button className="input-group-text" variant="primary" type="submit">
-                      {t('sendMessageButton')}
-                    </Button>
-                  </Form.Group>
+ handleSubmit, handleChange, values, resetForm,
+}) => (
+  <Form onSubmit={(data) => handleSubmit(data, resetForm)} ref={formRef}>
+    {Object.keys(initialValue).map((key) => (
+      <Form.Group className="mb-3 input-group flex-nowrap" key={key} controlId={key}>
+        <Form.Control
+          type="text"
+          placeholder={t('startMessagePlaceholder')}
+          aria-label={t('ariaNewMessage')}
+          onChange={handleChange}
+          className="form-control"
+          name={key}
+          value={values[key]}
+        />
+        <Button className="input-group-text" variant="primary" type="submit">
+          {t('sendMessageButton')}
+        </Button>
+      </Form.Group>
                 ))}
-              </Form>
+  </Form>
             )}
           </Formik>
         </div>

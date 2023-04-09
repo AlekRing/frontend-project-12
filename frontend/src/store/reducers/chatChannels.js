@@ -11,9 +11,9 @@ export const chatChannelsSlice = createSlice({
       ...state,
       currentChannelId: payload,
     }),
-    addChannel: (state, { payload }) => ({
+    addChannels: (state, { payload }) => ({
       ...state,
-      channels: [...state.channels, payload],
+      channels: [...state.channels, ...payload],
     }),
     removeChannel: (state, { payload }) => ({
       ...state,
@@ -34,7 +34,7 @@ export const chatChannelsSlice = createSlice({
 });
 
 export const {
-  changeCurrentChannelId, addChannel, removeChannel, renameChannel,
+  changeCurrentChannelId, addChannels, removeChannel, renameChannel,
 } = chatChannelsSlice.actions;
 
 export default chatChannelsSlice.reducer;

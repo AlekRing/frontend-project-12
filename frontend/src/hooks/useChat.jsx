@@ -3,74 +3,73 @@ import { useTranslation } from 'react-i18next';
 import { io } from 'socket.io-client';
 import { toast } from 'react-toastify';
 import {
-  addMessage,
-  addChannel,
+  addChannels,
   changeCurrentChannelId,
   removeChannel,
   renameChannel as renameChannelReducer,
 } from '../store/reducers/chatChannels';
+import { addMessages } from '../store/reducers/chatMessages';
 
 const socketInit = {
   socket: null,
-  isReady: false,
+  handlers: null,
 };
 
 const useChat = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  if (socketInit.isReady) return socketInit.socket;
+  if (socketInit.handlers) return socketInit.handlers;
 
   socketInit.socket = io();
 
   socketInit.socket.on('newMessage', (payload) => {
-    dispatch(addMessage(payload));
+    dispatch(addMessages([payload]));
   });
 
   socketInit.socket.on('newChannel', (payload) => {
-    dispatch(addChannel(payload));
-
-    const { id } = payload;
-    dispatch(changeCurrentChannelId(id));
-    toast.success(t('channelAdded'));
+    dispatch(addChannels([payload]));
   });
 
   socketInit.socket.on('removeChannel', (payload) => {
     dispatch(removeChannel(payload));
-    toast.success(t('channelDeleted'));
   });
 
   socketInit.socket.on('renameChannel', (payload) => {
     dispatch(renameChannelReducer(payload));
-    toast.success(t('channelRenamed'));
   });
 
-  socketInit.isReady = true;
-
-  const { socket } = socketInit;
-
   const sendMessage = (data) => {
-    socket.emit('newMessage', data);
+    socketInit.socket.emit('newMessage', data);
   };
 
   const createChannel = (name) => {
-    socket.emit('newChannel', { name });
+    socketInit.socket.emit('newChannel', { name }, ({ data }) => {
+      dispatch(changeCurrentChannelId(data.id));
+      toast.success(t('channelAdded'));
+    });
   };
 
   const deleteChannel = (id) => {
-    socket.emit('removeChannel', { id });
+    socketInit.socket.emit('removeChannel', { id }, () => {
+      toast.success(t('channelDeleted'));
+    });
   };
 
   const renameChannel = (id, name) => {
-    socket.emit('renameChannel', { id, name });
+    socketInit.socket.emit('renameChannel', { id, name }, () => {
+      toast.success(t('channelRenamed'));
+    });
   };
 
-  return {
+  socketInit.handlers = {
     sendMessage,
     createChannel,
     deleteChannel,
     renameChannel,
   };
+
+  return socketInit.handlers;
 };
 
 export default useChat;

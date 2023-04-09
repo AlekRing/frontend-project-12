@@ -12,7 +12,11 @@
     "type": "git",
     "url": "git+https://github.com/AlekRing/frontend-project-12.git"
   },
-  "keywords": ["chat", "frontend", "project"],
+  "keywords": [
+    "chat",
+    "frontend",
+    "project"
+  ],
   "author": "Oleg Koltcov",
   "license": "ISC",
   "bugs": {

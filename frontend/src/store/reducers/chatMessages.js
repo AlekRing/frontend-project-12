@@ -6,13 +6,13 @@ export const chatMessagesSlice = createSlice({
     messages: [],
   },
   reducers: {
-    addMessage: (state, { payload }) => ({
+    addMessages: (state, { payload }) => ({
       ...state,
-      messages: [...state.messages, payload],
+      messages: [...state.messages, ...payload],
     }),
   },
 });
 
-export const { addMessage } = chatMessagesSlice.actions;
+export const { addMessages } = chatMessagesSlice.actions;
 
 export default chatMessagesSlice.reducer;

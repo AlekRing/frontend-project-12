@@ -1,14 +1,19 @@
 import React, { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/esm/Button';
 import { useTranslation } from 'react-i18next';
-import ChatModal from '../containers/ChatModal';
-import ChannelActionsContext from '../store/context/channelActionsContext';
+import ChatModal from './ChatModal';
 import ChatContext from '../store/context/chatContext';
+import { toggleRemoveModal } from '../store/reducers/modals';
+import { selectChangingChannelId } from '../store/selectors/selectors';
 
-const RemoveChannelModal = ({ toggle, isOpen }) => {
+const RemoveChannelModal = ({ isOpen }) => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { changingChannelId } = useContext(ChannelActionsContext);
   const { chatActions } = useContext(ChatContext);
+
+  const changingChannelId = useSelector(selectChangingChannelId);
+  const toggle = () => dispatch(toggleRemoveModal());
 
   const handleSubmit = async () => {
     chatActions.deleteChannel(changingChannelId);

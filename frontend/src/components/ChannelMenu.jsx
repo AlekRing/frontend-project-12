@@ -1,26 +1,22 @@
-import { useContext } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useTranslation } from 'react-i18next';
-import ChannelActionsContext from '../store/context/channelActionsContext';
+import { useDispatch } from 'react-redux';
+import { setChangingChannelId, toggleRemoveModal, toggleRenameModal } from '../store/reducers/modals';
 
 const ChannelMenu = ({ channelId }) => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const {
-    toggleRemoveModal,
-    toggleRenameModal,
-    setChangingChannelId,
-  } = useContext(ChannelActionsContext);
 
   const handleRemoveChannel = () => {
-    toggleRemoveModal();
-    setChangingChannelId(channelId);
+    dispatch(toggleRemoveModal());
+    dispatch(setChangingChannelId(channelId));
   };
 
   const handleRenameChannel = (e) => {
     e.stopPropagation();
 
-    toggleRenameModal();
-    setChangingChannelId(channelId);
+    dispatch(toggleRenameModal());
+    dispatch(setChangingChannelId(channelId));
   };
 
   const handleClick = (e) => e.stopPropagation();
@@ -33,7 +29,9 @@ const ChannelMenu = ({ channelId }) => {
       <Dropdown.Menu>
         <Dropdown.Item onClick={handleRenameChannel}>{t('renameChannelMenu')}</Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.Item className="text-danger" onClick={handleRemoveChannel}>{t('deleteChannelMenu')}</Dropdown.Item>
+        <Dropdown.Item className="text-danger" onClick={handleRemoveChannel}>
+          {t('deleteChannelMenu')}
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
