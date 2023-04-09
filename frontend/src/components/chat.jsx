@@ -72,26 +72,26 @@ const Chat = () => {
           />
           <Formik initialValues={initialValue} onSubmit={sendMessage} validateOnBlur>
             {({
- handleSubmit, handleChange, values, resetForm,
-}) => (
-  <Form onSubmit={(data) => handleSubmit(data, resetForm)} ref={formRef}>
-    {Object.keys(initialValue).map((key) => (
-      <Form.Group className="mb-3 input-group flex-nowrap" key={key} controlId={key}>
-        <Form.Control
-          type="text"
-          placeholder={t('startMessagePlaceholder')}
-          aria-label={t('ariaNewMessage')}
-          onChange={handleChange}
-          className="form-control"
-          name={key}
-          value={values[key]}
-        />
-        <Button className="input-group-text" variant="primary" type="submit">
-          {t('sendMessageButton')}
-        </Button>
-      </Form.Group>
+              handleSubmit, handleChange, values, resetForm,
+            }) => (
+              <Form onSubmit={(data) => handleSubmit(data, resetForm)} ref={formRef}>
+                {Object.keys(initialValue).map((key) => (
+                  <Form.Group className="mb-3 input-group flex-nowrap" key={key} controlId={key}>
+                    <Form.Control
+                      type="text"
+                      placeholder={t('startMessagePlaceholder')}
+                      aria-label={t('ariaNewMessage')}
+                      onChange={handleChange}
+                      className="form-control"
+                      name={key}
+                      value={values[key]}
+                    />
+                    <Button className="input-group-text" variant="primary" type="submit">
+                      {t('sendMessageButton')}
+                    </Button>
+                  </Form.Group>
                 ))}
-  </Form>
+              </Form>
             )}
           </Formik>
         </div>

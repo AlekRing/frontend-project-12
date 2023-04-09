@@ -24,21 +24,21 @@ const Login = () => {
   }, [isLoggedIn, navigate]);
 
   const handleSubmit = (data) => axios
-      .post(routes.loginPath(), data)
-      .then((res) => {
-        localStorage.setItem('token', res.data.token);
-        logIn();
-      })
-      .catch((error) => {
-        console.error(error);
+    .post(routes.loginPath(), data)
+    .then((res) => {
+      localStorage.setItem('token', res.data.token);
+      logIn();
+    })
+    .catch((error) => {
+      console.error(error);
 
-        if (error.response.status === 401) {
-          toast.error(t('wrongCredentials'));
-          return;
-        }
+      if (error.response.status === 401) {
+        toast.error(t('wrongCredentials'));
+        return;
+      }
 
-        toast.error(t('somethingWentWrong'));
-      });
+      toast.error(t('somethingWentWrong'));
+    });
 
   const loginSchema = Yup.object().shape({
     username: Yup.string().min(2, 'tooShort').max(50, 'tooLong').required('required'),

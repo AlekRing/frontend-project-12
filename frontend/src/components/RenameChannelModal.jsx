@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next';
 import CommonForm from './CommonForm';
 import ChatModal from './ChatModal';
 import {
-    channelsNamesSelector,
-    selectChangingChannel,
-    selectChangingChannelId,
+  channelsNamesSelector,
+  selectChangingChannel,
+  selectChangingChannelId,
 } from '../store/selectors/selectors';
 import ChatContext from '../store/context/chatContext';
 import { toggleRenameModal } from '../store/reducers/modals';

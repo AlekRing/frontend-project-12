@@ -48,7 +48,7 @@ const SignUp = () => {
 
   const signupSchema = Yup.object().shape({
     usernameRegister: Yup.string().trim().min(3, 'tooShortUserName').max(20, 'tooLong')
-.required('required'),
+      .required('required'),
     password: Yup.string().trim().min(6, 'tooShortPassword').required('required'),
     repeatPassword: Yup.string()
       .trim()

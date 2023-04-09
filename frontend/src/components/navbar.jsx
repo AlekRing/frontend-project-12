@@ -9,13 +9,13 @@ const UnAuthorizedHeader = ({ isLoginPage, t }) => (isLoginPage ? (
       {t('signup')}
     </Link>
   </li>
-  ) : (
-    <li className="nav-item">
-      <Link className="nav-link" to="/login">
-        {t('login')}
-      </Link>
-    </li>
-  ));
+) : (
+  <li className="nav-item">
+    <Link className="nav-link" to="/login">
+      {t('login')}
+    </Link>
+  </li>
+));
 
 const AuthorizedHeader = ({ handleClick, t }) => (
   <>
