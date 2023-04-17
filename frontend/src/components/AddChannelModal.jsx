@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/esm/Button';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +9,7 @@ import ChatModal from './ChatModal';
 import { channelsNamesSelector } from '../store/selectors/selectors';
 import ChatContext from '../store/context/chatContext';
 import { toggleAddChannelModal } from '../store/reducers/modals';
+import { changeCurrentChannelId } from '../store/reducers/chatChannels';
 
 const initialValues = { channelName: '' };
 const initialValuesInputsProps = {
@@ -38,14 +40,15 @@ const AddChannelModal = ({ isOpen }) => {
 
     const uniqueSchema = Yup.string().notOneOf(channelsNames);
 
-    try {
-      uniqueSchema.validateSync(channelName);
-
-      chatActions.createChannel(channelName);
+    uniqueSchema.validate(channelName).then(() => {
+      chatActions.createChannel(channelName, (response) => {
+        dispatch(changeCurrentChannelId(response.data.id));
+        toast.success(t('channelAdded'));
+      });
       toggle();
-    } catch (error) {
+    }).catch(() => {
       setSubmitError(t('uniqueChannelNameError'));
-    }
+    });
   };
 
   return (

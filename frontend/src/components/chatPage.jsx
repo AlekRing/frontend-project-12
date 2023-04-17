@@ -17,16 +17,10 @@ import {
 import { useAuth } from '../hooks/useAuth';
 import routes from '../api/routes';
 
-const getAuthHeader = () => {
-  const token = localStorage.getItem('token');
-
-  return token ? { Authorization: `bearer ${token}` } : {};
-};
-
 const ChatPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { isLoggedIn, logOut } = useAuth();
+  const { isLoggedIn, logOut, getAuthHeader } = useAuth();
 
   const isAddModalOpen = useSelector(selectIsAddChannelmodalOpen);
   const isRenameModalOpen = useSelector(selectIsRenameChannelmodalOpen);

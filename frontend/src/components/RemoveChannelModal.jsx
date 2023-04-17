@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/esm/Button';
 import { useTranslation } from 'react-i18next';
 import ChatModal from './ChatModal';
@@ -16,7 +17,9 @@ const RemoveChannelModal = ({ isOpen }) => {
   const toggle = () => dispatch(toggleRemoveModal());
 
   const handleSubmit = async () => {
-    chatActions.deleteChannel(changingChannelId);
+    chatActions.deleteChannel(changingChannelId, () => {
+      toast.success(t('channelDeleted'));
+    });
     toggle();
   };
 

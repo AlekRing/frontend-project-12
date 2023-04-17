@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/esm/Button';
 import { useTranslation } from 'react-i18next';
 import CommonForm from './CommonForm';
@@ -47,7 +48,9 @@ const RenameChannelModal = ({ isOpen }) => {
     try {
       uniqueSchema.validateSync(channelName);
 
-      chatActions.renameChannel(changingChannelId, channelName);
+      chatActions.renameChannel(changingChannelId, channelName, () => {
+        toast.success(t('channelRenamed'));
+      });
       toggle();
     } catch (error) {
       setSubmitError('Name of the channel must be unique');

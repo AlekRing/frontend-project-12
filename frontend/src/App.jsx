@@ -2,15 +2,18 @@ import React, { useEffect, useMemo, useState } from 'react';
 import AppRoutes from './routes';
 import AuthContext from './store/context/authContext';
 import ChatContext from './store/context/chatContext';
-import useChat from './hooks/useChat';
 
-const App = () => {
+const App = ({ chatActions }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const logIn = () => setIsLoggedIn(true);
   const logOut = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
+  };
+  const getAuthHeader = () => {
+    const token = localStorage.getItem('token');
+    return token ? { Authorization: `bearer ${token}` } : {};
   };
 
   useEffect(() => {
@@ -19,8 +22,9 @@ const App = () => {
     if (token && token !== undefined) logIn();
   }, []);
 
-  const authCtx = useMemo(() => ({ isLoggedIn, logIn, logOut }), [isLoggedIn]);
-  const chatActions = useChat();
+  const authCtx = useMemo(() => ({
+    isLoggedIn, logIn, logOut, getAuthHeader,
+  }), [isLoggedIn]);
 
   const passingContext = useMemo(() => ({ chatActions }), [chatActions]);
 
