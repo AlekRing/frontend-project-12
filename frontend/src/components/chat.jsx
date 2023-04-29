@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import filter from 'leo-profanity';
 import Form from 'react-bootstrap/Form';
@@ -8,9 +8,10 @@ import { useTranslation } from 'react-i18next';
 import ChannelsList from './channelsList';
 import MessagesList from './messagesList';
 import { changeCurrentChannelId } from '../store/reducers/chatChannels';
-import { chatChannelsSelector, currentChatMessagesSelector } from '../store/selectors/selectors';
+import { chatChannelsSelector, currentChatMessagesSelector, userNameSelector } from '../store/selectors/selectors';
 import ChatContext from '../store/context/chatContext';
-import { toggleAddChannelModal } from '../store/reducers/modals';
+import { setModal } from '../store/reducers/modals';
+import { ADD_MODAL } from '../constants';
 
 const initialValue = { message: '' };
 const stringReg = /[a-zA-Z]/i;
@@ -19,7 +20,9 @@ const Chat = () => {
   const dispatch = useDispatch();
   const chatChannels = useSelector(chatChannelsSelector);
   const messages = useSelector(currentChatMessagesSelector);
-  const formRef = useRef();
+  const userName = useSelector(userNameSelector);
+  const formRef = useRef(null);
+  const scrollableRef = useRef(null);
   const { t } = useTranslation();
 
   const { chatActions } = useContext(ChatContext);
@@ -27,7 +30,11 @@ const Chat = () => {
   const sendMessage = ({ message }, { resetForm }) => {
     if (!message) return;
 
-    const data = { body: '', channelId: chatChannels.currentChannelId };
+    const data = {
+      body: '',
+      channelId: chatChannels.currentChannelId,
+      userName,
+    };
 
     if (stringReg.exec(message)) {
       filter.loadDictionary();
@@ -50,10 +57,16 @@ const Chat = () => {
     dispatch(changeCurrentChannelId(channelId));
   };
 
-  const toggleAddModal = () => dispatch(toggleAddChannelModal());
+  const toggleAddModal = () => dispatch(setModal(ADD_MODAL));
+
+  useEffect(() => {
+    if (scrollableRef.current && messages.length) {
+      scrollableRef.current.scrollTop = scrollableRef.current.scrollHeight;
+    }
+  }, [messages.length]);
 
   return (
-    <div className="container">
+    <div className="container h-100">
       <div className="row align-items-start pt-4">
         <div className="col" style={{ maxWidth: '230px' }}>
           <ChannelsList
@@ -64,11 +77,12 @@ const Chat = () => {
             t={t}
           />
         </div>
-        <div className="col border rounded pt-2">
+        <div className="col border rounded pt-2 min-vh-75">
           <MessagesList
             messages={messages}
             currentChannelId={chatChannels.currentChannelId}
             t={t}
+            scrollref={scrollableRef}
           />
           <Formik initialValues={initialValue} onSubmit={sendMessage} validateOnBlur>
             {({

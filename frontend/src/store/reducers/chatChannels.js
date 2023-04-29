@@ -1,11 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
+import logout from '../actions/auth';
+
+const initialState = {
+  channels: [],
+  currentChannelId: null,
+};
 
 export const chatChannelsSlice = createSlice({
   name: 'chatChannels',
-  initialState: {
-    channels: [],
-    currentChannelId: null,
-  },
+  initialState,
   reducers: {
     changeCurrentChannelId: (state, { payload }) => ({
       ...state,
@@ -30,6 +33,9 @@ export const chatChannelsSlice = createSlice({
         channels,
       };
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logout, () => initialState);
   },
 });
 

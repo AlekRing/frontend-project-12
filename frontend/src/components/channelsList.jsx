@@ -29,7 +29,7 @@ const ChannelsList = ({
         )}
         onClick={changeChannel}
       >
-        <span className={currentChannelId === channel.id ? 'fw-bold' : null}>
+        <span className={currentChannelId === channel.id ? 'fw-bold mw-100 text-break' : 'mw-100 text-break'} data-id={channel.id}>
           {t('channelNameStart')}
           {channel.name}
         </span>

@@ -2,19 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 import logout from '../actions/auth';
 
 const initialState = {
-  modal: '',
-  channelId: null,
+  userName: '',
 };
 
 export const modalsSlice = createSlice({
-  name: 'modals',
+  name: 'user',
   initialState,
   reducers: {
-    setModal: (state, { payload }) => ({
+    setUserName: (state, { payload }) => ({
       ...state,
-      modal: payload,
+      userName: payload,
     }),
-    updateModals: (state, { payload }) => payload,
   },
   extraReducers: (builder) => {
     builder.addCase(logout, () => initialState);
@@ -22,8 +20,7 @@ export const modalsSlice = createSlice({
 });
 
 export const {
-  updateModals,
-  setModal,
+  setUserName,
 } = modalsSlice.actions;
 
 export default modalsSlice.reducer;

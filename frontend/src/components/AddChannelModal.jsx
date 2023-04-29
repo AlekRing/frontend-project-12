@@ -8,7 +8,7 @@ import CommonForm from './CommonForm';
 import ChatModal from './ChatModal';
 import { channelsNamesSelector } from '../store/selectors/selectors';
 import ChatContext from '../store/context/chatContext';
-import { toggleAddChannelModal } from '../store/reducers/modals';
+import { setModal } from '../store/reducers/modals';
 import { changeCurrentChannelId } from '../store/reducers/chatChannels';
 
 const initialValues = { channelName: '' };
@@ -16,11 +16,7 @@ const initialValuesInputsProps = {
   channelName: { type: 'text', placeholder: 'chatNamePlaceholder' },
 };
 
-const channelNameSchema = Yup.object().shape({
-  channelName: Yup.string().min(2, 'tooShort').max(50, 'tooLong').required('required'),
-});
-
-const AddChannelModal = ({ isOpen }) => {
+const AddChannelModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [submitError, setSubmitError] = useState('');
@@ -29,30 +25,29 @@ const AddChannelModal = ({ isOpen }) => {
 
   const { chatActions } = useContext(ChatContext);
 
-  const toggle = () => dispatch(toggleAddChannelModal());
+  const toggle = () => dispatch(setModal(''));
 
   useEffect(() => {
-    if (!isOpen) setSubmitError('');
-  }, [isOpen]);
+    setSubmitError('');
+  }, []);
 
   const handleSubmit = async (data) => {
     const { channelName } = data;
 
-    const uniqueSchema = Yup.string().notOneOf(channelsNames);
-
-    uniqueSchema.validate(channelName).then(() => {
-      chatActions.createChannel(channelName, (response) => {
-        dispatch(changeCurrentChannelId(response.data.id));
-        toast.success(t('channelAdded'));
-      });
+    chatActions.createChannel(channelName, (response) => {
+      dispatch(changeCurrentChannelId(response.data.id));
+      toast.success(t('channelAdded'));
       toggle();
-    }).catch(() => {
-      setSubmitError(t('uniqueChannelNameError'));
     });
   };
 
+  const channelNameSchema = Yup.object().shape({
+    channelName: Yup.string().min(2, 'tooShort').max(50, 'tooLong').required('required')
+      .notOneOf(channelsNames),
+  });
+
   return (
-    <ChatModal isOpen={isOpen} title={t('addChannelTitle')}>
+    <ChatModal title={t('addChannelTitle')}>
       <CommonForm
         trySubmit={handleSubmit}
         initialValues={initialValues}

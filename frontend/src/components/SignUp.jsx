@@ -25,8 +25,7 @@ const SignUp = () => {
     axios
       .post(routes.signupPath(), readyData)
       .then((res) => {
-        localStorage.setItem('token', res.data.token);
-        logIn();
+        logIn(res.data.token);
         navigate('/');
       })
       .catch((error) => {

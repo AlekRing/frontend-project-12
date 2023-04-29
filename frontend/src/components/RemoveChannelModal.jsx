@@ -5,26 +5,26 @@ import Button from 'react-bootstrap/esm/Button';
 import { useTranslation } from 'react-i18next';
 import ChatModal from './ChatModal';
 import ChatContext from '../store/context/chatContext';
-import { toggleRemoveModal } from '../store/reducers/modals';
-import { selectChangingChannelId } from '../store/selectors/selectors';
+import { selectchannelId } from '../store/selectors/selectors';
+import { setModal } from '../store/reducers/modals';
 
-const RemoveChannelModal = ({ isOpen }) => {
+const RemoveChannelModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { chatActions } = useContext(ChatContext);
 
-  const changingChannelId = useSelector(selectChangingChannelId);
-  const toggle = () => dispatch(toggleRemoveModal());
+  const channelId = useSelector(selectchannelId);
+  const toggle = () => dispatch(setModal(''));
 
   const handleSubmit = async () => {
-    chatActions.deleteChannel(changingChannelId, () => {
+    chatActions.deleteChannel(channelId, () => {
       toast.success(t('channelDeleted'));
     });
     toggle();
   };
 
   return (
-    <ChatModal isOpen={isOpen} title={t('removeChannelModal')}>
+    <ChatModal title={t('removeChannelModal')}>
       <Button variant="danger" type="button" onClick={handleSubmit} className="d-inline me-3">
         {t('removeChannel')}
       </Button>

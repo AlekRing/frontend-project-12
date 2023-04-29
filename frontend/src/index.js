@@ -82,9 +82,9 @@ const init = () => {
       <ErrorBoundary>
         <BrowserRouter>
           <ReduxProvider store={store}>
-            <React.StrictMode>
-              <App chatActions={handlers} />
-            </React.StrictMode>
+            {/* <React.StrictMode> */}
+            <App chatActions={handlers} />
+            {/* </React.StrictMode> */}
           </ReduxProvider>
         </BrowserRouter>
       </ErrorBoundary>

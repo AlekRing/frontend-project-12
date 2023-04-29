@@ -9,10 +9,10 @@ import ChatModal from './ChatModal';
 import {
   channelsNamesSelector,
   selectChangingChannel,
-  selectChangingChannelId,
+  selectchannelId,
 } from '../store/selectors/selectors';
 import ChatContext from '../store/context/chatContext';
-import { toggleRenameModal } from '../store/reducers/modals';
+import { setModal } from '../store/reducers/modals';
 
 const initialValues = { channelName: '' };
 const initialValuesInputsProps = {
@@ -23,22 +23,22 @@ const channelNameSchema = Yup.object().shape({
   channelName: Yup.string().min(2, 'Too Short!').max(25, 'Too Long!').required('Required'),
 });
 
-const RenameChannelModal = ({ isOpen }) => {
+const RenameChannelModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [submitError, setSubmitError] = useState('');
 
   const channelsNames = useSelector(channelsNamesSelector);
-  const changingChannelId = useSelector(selectChangingChannelId);
+  const channelId = useSelector(selectchannelId);
   const changingChannelName = useSelector(selectChangingChannel)?.name;
 
   const { chatActions } = useContext(ChatContext);
 
-  const toggle = () => dispatch(toggleRenameModal());
+  const toggle = () => dispatch(setModal(''));
 
   useEffect(() => {
-    if (!isOpen) setSubmitError('');
-  }, [isOpen]);
+    setSubmitError('');
+  }, []);
 
   const handleSubmit = async (data) => {
     const { channelName } = data;
@@ -48,7 +48,7 @@ const RenameChannelModal = ({ isOpen }) => {
     try {
       uniqueSchema.validateSync(channelName);
 
-      chatActions.renameChannel(changingChannelId, channelName, () => {
+      chatActions.renameChannel(channelId, channelName, () => {
         toast.success(t('channelRenamed'));
       });
       toggle();
@@ -60,7 +60,7 @@ const RenameChannelModal = ({ isOpen }) => {
   initialValues.channelName = changingChannelName;
 
   return (
-    <ChatModal isOpen={isOpen} title={t('renameChannelModal')}>
+    <ChatModal title={t('renameChannelModal')}>
       <CommonForm
         trySubmit={handleSubmit}
         initialValues={initialValues}

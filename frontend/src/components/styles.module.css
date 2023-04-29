@@ -13,6 +13,7 @@
 }
 
 .messagesList {
-  max-height: 75vh;
+  height: 75vh;
+  list-style-type: none;
   overflow-y: scroll;
 }

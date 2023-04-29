@@ -26,8 +26,7 @@ const Login = () => {
   const handleSubmit = (data) => axios
     .post(routes.loginPath(), data)
     .then((res) => {
-      localStorage.setItem('token', res.data.token);
-      logIn();
+      logIn({ userName: res.data.username, token: res.data.token });
     })
     .catch((error) => {
       console.error(error);

@@ -1,30 +1,25 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Chat from './chat';
-import AddChannelModal from './AddChannelModal';
-import RemoveChannelModal from './RemoveChannelModal';
-import RenameChannelModal from './RenameChannelModal';
 import { addMessages } from '../store/reducers/chatMessages';
 import { addChannels, changeCurrentChannelId } from '../store/reducers/chatChannels';
-import {
-  selectIsAddChannelmodalOpen,
-  selectIsRemoveChannelmodalOpen,
-  selectIsRenameChannelmodalOpen,
-} from '../store/selectors/selectors';
+import { selectModal } from '../store/selectors/selectors';
 import { useAuth } from '../hooks/useAuth';
 import routes from '../api/routes';
+import Modals from './Modals';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { isLoggedIn, logOut, getAuthHeader } = useAuth();
+  const {
+    isLoggedIn, logOut, getAuthHeader,
+  } = useAuth();
 
-  const isAddModalOpen = useSelector(selectIsAddChannelmodalOpen);
-  const isRenameModalOpen = useSelector(selectIsRenameChannelmodalOpen);
-  const isRemoveModalOpen = useSelector(selectIsRemoveChannelmodalOpen);
+  const modal = useSelector(selectModal);
 
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -56,10 +51,8 @@ const ChatPage = () => {
 
   return (
     <>
-      <AddChannelModal isOpen={isAddModalOpen} />
       <Chat />
-      <RenameChannelModal isOpen={isRenameModalOpen} />
-      <RemoveChannelModal isOpen={isRemoveModalOpen} />
+      <Modals modal={modal} />
     </>
   );
 };

@@ -1,22 +1,21 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { setChangingChannelId, toggleRemoveModal, toggleRenameModal } from '../store/reducers/modals';
+import { updateModals } from '../store/reducers/modals';
+import { REMOVE_MODAL, RENAME_MODAL } from '../constants';
 
 const ChannelMenu = ({ channelId }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const handleRemoveChannel = () => {
-    dispatch(toggleRemoveModal());
-    dispatch(setChangingChannelId(channelId));
+    dispatch(updateModals({ modal: REMOVE_MODAL, channelId }));
   };
 
   const handleRenameChannel = (e) => {
     e.stopPropagation();
 
-    dispatch(toggleRenameModal());
-    dispatch(setChangingChannelId(channelId));
+    dispatch(updateModals({ modal: RENAME_MODAL, channelId }));
   };
 
   const handleClick = (e) => e.stopPropagation();
